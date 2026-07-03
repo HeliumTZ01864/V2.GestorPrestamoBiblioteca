@@ -56,6 +56,12 @@
     <Compile Include="Forms\Access\MenuForm.Designer.cs">
       <DependentUpon>MenuForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Categoria\CategoriaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Categoria\CategoriaForm.Designer.cs">
+      <DependentUpon>CategoriaForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Libro\LibrosForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -94,6 +100,9 @@
     <Compile Include="Servicios\UsuarioService.cs" />
     <EmbeddedResource Include="Forms\Access\MenuForm.resx">
       <DependentUpon>MenuForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Categoria\CategoriaForm.resx">
+      <DependentUpon>CategoriaForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Libro\LibrosForm.resx">
       <DependentUpon>LibrosForm.cs</DependentUpon>

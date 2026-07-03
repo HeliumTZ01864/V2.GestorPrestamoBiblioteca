@@ -45,7 +45,7 @@
             // 
             // BtPrestamos
             // 
-            this.BtPrestamos.Location = new System.Drawing.Point(155, 124);
+            this.BtPrestamos.Location = new System.Drawing.Point(155, 137);
             this.BtPrestamos.Name = "BtPrestamos";
             this.BtPrestamos.Size = new System.Drawing.Size(75, 23);
             this.BtPrestamos.TabIndex = 1;
