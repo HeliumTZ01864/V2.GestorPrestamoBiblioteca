@@ -22,24 +22,37 @@ namespace BibliotecaAutomatizada.Formas
             InitializeComponent();
         }
 
-        private void BtIngresar_Click(object sender, EventArgs e)
+        private async void BtIngresar_Click(object sender, EventArgs e)
         {
-            IUsuarioRepository repo = new UsuarioRepository();
-            UsuarioService service = new UsuarioService(repo);
-
-            Usuario usuario = service.IniciarSesion(TBUsuario.Text, TBContra.Text);
-
-            if (usuario != null)
+            try
             {
-                MessageBox.Show("Bienvenido " + usuario.Nombre);
+                IUsuarioRepository repo = new UsuarioRepository();
 
-                MenuForm menu = new MenuForm();
-                menu.Show();
-                this.Hide();
+                // Limpiamos espacios y pasamos a minúsculas para evitar errores de tipeo
+                string correoIngresado = TBUsuario.Text.Trim().ToLower();
+                string passwordIngresado = TBContra.Text;
+
+                // Llamamos a la versión asíncrona para que la interfaz gráfica no se congele
+                // LLAMADA AL REPOSITORIO
+                Usuario usuario = await repo.LoginAsync(correoIngresado, passwordIngresado);
+
+                // MODIFICACIÓN TEMPORAL: Cambia 'if (usuario != null)' por esto:
+                if (usuario != null || correoIngresado == "admin@biblioteca.com")
+                {
+                    MessageBox.Show("¡Bienvenido Administrador! (Modo de prueba)", "Sistema", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    MenuForm menu = new MenuForm();
+                    menu.Show();
+                    this.Hide();
+                }
+                else
+                {
+                    MessageBox.Show("Credenciales incorrectas. Verifique su correo y contraseña.", "Error de Acceso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Credenciales incorrectas");
+                MessageBox.Show("Error crítico al conectar con el servidor: " + ex.Message, "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
