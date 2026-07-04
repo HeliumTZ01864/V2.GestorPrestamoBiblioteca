@@ -77,6 +77,7 @@
     <Compile Include="Interfaces\ICalculadoraMulta.cs" />
     <Compile Include="Interfaces\ICategoriaRepository.cs" />
     <Compile Include="Interfaces\ILibroRepository.cs" />
+    <Compile Include="Interfaces\IPrestamoRepository.cs" />
     <Compile Include="Interfaces\IUsuarioRepository.cs" />
     <Compile Include="Interfaces\MultaRegular.cs" />
     <Compile Include="Modelos\Categoria.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Respositorios\CategoriaRepository.cs" />
     <Compile Include="Respositorios\LibroRepository.cs" />
+    <Compile Include="Respositorios\PrestamoRepository.cs" />
     <Compile Include="Respositorios\UsuarioRepository.cs" />
     <Compile Include="Servicios\LibroService.cs" />
     <Compile Include="Servicios\UsuarioService.cs" />
