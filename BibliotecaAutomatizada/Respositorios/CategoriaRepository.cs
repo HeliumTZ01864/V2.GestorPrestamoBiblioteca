@@ -30,12 +30,49 @@ namespace BibliotecaAutomatizada.Respositorios
                     lista.Add(new Categoria()
                     {
                         Id = (int)dr["Id"],
-                        Nombre = dr["Nombre"].ToString()
+                        Nombre = dr["Nombre"].ToString(),
+                        Descricao = dr["Descricao"].ToString()
                     });
                 }
             }
 
             return lista;
+        }
+
+        public void Insertar(Categoria categoria)
+        {
+            using (SqlConnection con = conexion.ObtenerConexion())
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("INSERT INTO Categoria (Nombre, Descricao) VALUES (@Nombre, @Descricao)", con);
+                cmd.Parameters.AddWithValue("@Nombre", categoria.Nombre);
+                cmd.Parameters.AddWithValue("@Descricao", categoria.Descricao ?? "");
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void Modificar(Categoria categoria)
+        {
+            using (SqlConnection con = conexion.ObtenerConexion())
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("UPDATE Categoria SET Nombre = @Nombre, Descricao = @Descricao WHERE Id = @Id", con);
+                cmd.Parameters.AddWithValue("@Nombre", categoria.Nombre);
+                cmd.Parameters.AddWithValue("@Descricao", categoria.Descricao ?? "");
+                cmd.Parameters.AddWithValue("@Id", categoria.Id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void Eliminar(int id)
+        {
+            using (SqlConnection con = conexion.ObtenerConexion())
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("DELETE FROM Categoria WHERE Id = @Id", con);
+                cmd.Parameters.AddWithValue("@Id", id);
+                cmd.ExecuteNonQuery();
+            }
         }
     }
 }
