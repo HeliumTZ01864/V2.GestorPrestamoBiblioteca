@@ -68,6 +68,18 @@
     <Compile Include="Forms\Access\LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Menus\MenuAdminForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Menus\MenuAdminForm.Designer.cs">
+      <DependentUpon>MenuAdminForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Menus\MenuEmpleadoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Menus\MenuEmpleadoForm.Designer.cs">
+      <DependentUpon>MenuEmpleadoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Prestamos\PrestamosForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,6 +114,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Access\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Menus\MenuAdminForm.resx">
+      <DependentUpon>MenuAdminForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Menus\MenuEmpleadoForm.resx">
+      <DependentUpon>MenuEmpleadoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Prestamos\PrestamosForm.resx">
       <DependentUpon>PrestamosForm.cs</DependentUpon>
