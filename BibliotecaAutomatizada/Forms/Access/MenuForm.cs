@@ -1,5 +1,6 @@
 ﻿using BibliotecaAutomatizada.Formas;
 using BibliotecaAutomatizada.Forms.Prestamos;
+using BibliotecaAutomatizada.Forms.Multas;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -42,6 +43,12 @@ namespace BibliotecaAutomatizada.Forms.Access
 
             LoginForm login = new LoginForm();
             login.Show();
+        }
+
+        private void BtMultas_Click(object sender, EventArgs e)
+        {
+            MultasForm form = new MultasForm();
+            form.Show();
         }
     }
 }
