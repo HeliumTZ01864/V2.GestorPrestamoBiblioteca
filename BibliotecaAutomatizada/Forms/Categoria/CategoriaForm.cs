@@ -174,6 +174,8 @@ namespace BibliotecaAutomatizada.Forms.Categoria
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
 
+
+
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
