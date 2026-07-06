@@ -17,7 +17,17 @@ namespace BibliotecaAutomatizada.Respositorios
 
         public void Eliminar(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = conexion.ObtenerConexion())
+            {
+                con.Open();
+
+                string query = "DELETE FROM Multa WHERE Id = @Id";
+
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@Id", id);
+
+                cmd.ExecuteNonQuery();
+            }
         }
 
         public void Insertar(Multa multa)
@@ -40,12 +50,62 @@ namespace BibliotecaAutomatizada.Respositorios
 
         public DataTable Listar()
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = conexion.ObtenerConexion())
+            {
+                con.Open();
+
+                string query = @"
+                    SELECT 
+                        M.Id,
+                        M.PrestamoDetalleId,
+                        U.Nombre AS Usuario,
+                        L.Titulo AS Libro,
+                        M.Monto,
+                        CASE WHEN M.Pagada = 1 THEN 'Sí' ELSE 'No' END AS Pagada
+                    FROM Multa M
+                    INNER JOIN PrestamoDetalle PD ON M.PrestamoDetalleId = PD.Id
+                    INNER JOIN Prestamo P ON PD.PrestamoId = P.Id
+                    INNER JOIN Usuario U ON P.UsuarioId = U.Id
+                    INNER JOIN Libro L ON PD.LibroId = L.Id";
+
+                SqlDataAdapter da = new SqlDataAdapter(query, con);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                return dt;
+            }
         }
 
         public DataTable ListarPorPrestamoDetalle(int prestamoDetalleId)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = conexion.ObtenerConexion())
+            {
+                con.Open();
+
+                string query = @"
+                    SELECT 
+                        M.Id,
+                        M.PrestamoDetalleId,
+                        U.Nombre AS Usuario,
+                        L.Titulo AS Libro,
+                        M.Monto,
+                        CASE WHEN M.Pagada = 1 THEN 'Sí' ELSE 'No' END AS Pagada
+                    FROM Multa M
+                    INNER JOIN PrestamoDetalle PD ON M.PrestamoDetalleId = PD.Id
+                    INNER JOIN Prestamo P ON PD.PrestamoId = P.Id
+                    INNER JOIN Usuario U ON P.UsuarioId = U.Id
+                    INNER JOIN Libro L ON PD.LibroId = L.Id
+                    WHERE M.PrestamoDetalleId = @PrestamoDetalleId";
+
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@PrestamoDetalleId", prestamoDetalleId);
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                return dt;
+            }
         }
 
         public void MarcarComoPagada(int id)

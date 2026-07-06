@@ -2,6 +2,7 @@
 using BibliotecaAutomatizada.Modelos;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,6 +56,32 @@ namespace BibliotecaAutomatizada.Servicios
                 throw new Exception("El monto de la multa debe ser mayor a cero.");
 
             repo.Insertar(multa);
+        }
+
+        public void PagarMulta(int id)
+        {
+            if (id <= 0)
+                throw new Exception("ID de multa inválido.");
+
+            repo.MarcarComoPagada(id);
+        }
+
+        public void EliminarMulta(int id)
+        {
+            if (id <= 0)
+                throw new Exception("ID de multa inválido.");
+
+            repo.Eliminar(id);
+        }
+
+        public DataTable ObtenerMultas()
+        {
+            return repo.Listar();
+        }
+
+        public DataTable ObtenerMultasPorDetalle(int prestamoDetalleId)
+        {
+            return repo.ListarPorPrestamoDetalle(prestamoDetalleId);
         }
     }
 }
