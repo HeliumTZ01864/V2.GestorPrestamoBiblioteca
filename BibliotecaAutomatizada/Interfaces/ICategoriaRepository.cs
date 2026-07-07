@@ -10,5 +10,8 @@ namespace BibliotecaAutomatizada.Interfaces
     public interface ICategoriaRepository
     {
         List<Categoria> Listar();
+        void Insertar(Categoria categoria);
+        void Modificar(Categoria categoria);
+        void Eliminar(int id);
     }
 }

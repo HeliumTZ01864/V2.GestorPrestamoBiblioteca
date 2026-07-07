@@ -1,4 +1,5 @@
 ﻿using BibliotecaAutomatizada.Formas;
+using BibliotecaAutomatizada.Forms.Categoria;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace BibliotecaAutomatizada
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new LoginForm());
+            Application.Run(new CategoriaForm());
         }
     }
 }
