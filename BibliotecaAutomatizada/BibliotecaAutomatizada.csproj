@@ -56,6 +56,12 @@
     <Compile Include="Forms\Access\MenuForm.Designer.cs">
       <DependentUpon>MenuForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Categoria\CategoriaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Categoria\CategoriaForm.Designer.cs">
+      <DependentUpon>CategoriaForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Libro\LibrosForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -73,6 +79,17 @@
     </Compile>
     <Compile Include="Forms\Multas\MultasForm.Designer.cs">
       <DependentUpon>MultasForm.cs</DependentUpon>
+    <Compile Include="Forms\Menus\MenuAdminForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Menus\MenuAdminForm.Designer.cs">
+      <DependentUpon>MenuAdminForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Menus\MenuEmpleadoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Menus\MenuEmpleadoForm.Designer.cs">
+      <DependentUpon>MenuEmpleadoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Prestamos\PrestamosForm.cs">
       <SubType>Form</SubType>
@@ -84,6 +101,7 @@
     <Compile Include="Interfaces\ICategoriaRepository.cs" />
     <Compile Include="Interfaces\ILibroRepository.cs" />
     <Compile Include="Interfaces\IMultaRepository.cs" />
+    <Compile Include="Interfaces\IPrestamoRepository.cs" />
     <Compile Include="Interfaces\IUsuarioRepository.cs" />
     <Compile Include="Interfaces\MultaRegular.cs" />
     <Compile Include="Modelos\Categoria.cs" />
@@ -97,12 +115,17 @@
     <Compile Include="Respositorios\CategoriaRepository.cs" />
     <Compile Include="Respositorios\LibroRepository.cs" />
     <Compile Include="Respositorios\MultaRepository.cs" />
+    <Compile Include="Respositorios\PrestamoRepository.cs" />
     <Compile Include="Respositorios\UsuarioRepository.cs" />
+    <Compile Include="Servicios\CategoriaService.cs" />
     <Compile Include="Servicios\LibroService.cs" />
     <Compile Include="Servicios\MultaService.cs" />
     <Compile Include="Servicios\UsuarioService.cs" />
     <EmbeddedResource Include="Forms\Access\MenuForm.resx">
       <DependentUpon>MenuForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Categoria\CategoriaForm.resx">
+      <DependentUpon>CategoriaForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Libro\LibrosForm.resx">
       <DependentUpon>LibrosForm.cs</DependentUpon>
@@ -112,6 +135,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Multas\MultasForm.resx">
       <DependentUpon>MultasForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Menus\MenuAdminForm.resx">
+      <DependentUpon>MenuAdminForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Menus\MenuEmpleadoForm.resx">
+      <DependentUpon>MenuEmpleadoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Prestamos\PrestamosForm.resx">
       <DependentUpon>PrestamosForm.cs</DependentUpon>
