@@ -6,7 +6,7 @@ using BibliotecaAutomatizada.Respositorios;
 using BibliotecaAutomatizada.Servicios;
 using System;
 using System.Windows.Forms;
-
+using BibliotecaAutomatizada.Sesion;
 namespace BibliotecaAutomatizada.Forms
 {
     public partial class LoginForm : Form
@@ -45,6 +45,8 @@ namespace BibliotecaAutomatizada.Forms
 
                 if (usuarioValido != null)
                 {
+
+                    UsuarioSesion.UsuarioActual = usuarioValido;
                     MessageBox.Show(
                         $"¡Bienvenido {usuarioValido.Nombre}!\nAcceso concedido como: {usuarioValido.Rol}",
                         "Inicio de Sesión Exitoso",

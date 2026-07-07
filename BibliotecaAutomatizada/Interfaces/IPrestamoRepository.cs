@@ -6,12 +6,12 @@ namespace BibliotecaAutomatizada.Interfaces
 {
     public interface IPrestamoRepository
     {
-        Task<string> RegistrarReservaClienteAsync(int usuarioId, List<int> libroIds);
-        Task<Prestamo> ObtenerPorCodigoBoletaAsync(string codigoBoleta);
-        Task<bool> ActualizarEstadoPrestamoAsync(int prestamoId, string nuevoEstado);
-        Task<int> CancelarReservasExpiradasAsync();
+        bool Registrar(Prestamo prestamo);
 
-        // ¡NUEVO! Método para que el cliente revise sus reservas generadas
-        Task<List<Prestamo>> ObtenerHistorialClienteAsync(int usuarioId);
+        System.Data.DataTable Listar();
+
+        bool Editar(Prestamo prestamo);
+
+        bool Eliminar(int id);
     }
 }

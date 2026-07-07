@@ -1,10 +1,9 @@
-﻿using BibliotecaAutomatizada.Database;
+﻿using System;
+using BibliotecaAutomatizada.Database;
 using BibliotecaAutomatizada.Interfaces;
 using BibliotecaAutomatizada.Modelos;
-using System;
-using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
-using System.Threading.Tasks;
 
 namespace BibliotecaAutomatizada.Respositorios
 {
@@ -12,166 +11,253 @@ namespace BibliotecaAutomatizada.Respositorios
     {
         private ConexionDB conexion = new ConexionDB();
 
-        // 1. SOLUCIÓN AL ERROR DE COMPILACIÓN: Implementación del registro de reservas
-        public async Task<string> RegistrarReservaClienteAsync(int usuarioId, List<int> libroIds)
-        {
-            // Generamos un código único para la boleta de recojo
-            string codigoBoleta = "BOL-" + Guid.NewGuid().ToString().Substring(0, 8).ToUpper();
 
+        public bool Registrar(Prestamo prestamo)
+        {
             using (SqlConnection con = conexion.ObtenerConexion())
             {
-                await con.OpenAsync();
+                con.Open();
 
-                // Iniciamos la transacción de forma tradicional
-                using (SqlTransaction transaction = con.BeginTransaction())
+                SqlTransaction trans = con.BeginTransaction();
+
+                try
                 {
-                    try
+
+                    // 1. Insertar préstamo
+                    string sqlPrestamo = @"
+                    INSERT INTO Prestamo
+                    (
+                        UsuarioId,
+                        FechaPrestamo,
+                        CodigoBoleta,
+                        EstadoPrestamo
+                    )
+                    VALUES
+                    (
+                        @UsuarioId,
+                        @FechaPrestamo,
+                        @CodigoBoleta,
+                        @EstadoPrestamo
+                    );
+
+                    SELECT SCOPE_IDENTITY();";
+
+
+                    int prestamoId;
+
+
+                    using (SqlCommand cmd = new SqlCommand(sqlPrestamo, con, trans))
                     {
-                        // 1. Insertar la Cabecera del Préstamo
-                        string queryPrestamo = @"INSERT INTO Prestamo (UsuarioId, FechaPrestamo, CodigoBoleta, EstadoPrestamo) 
-                                         OUTPUT INSERTED.Id 
-                                         VALUES (@UsuarioId, @FechaPrestamo, @CodigoBoleta, 'PendienteRecojo')";
 
-                        int prestamoId = 0;
+                        cmd.Parameters.AddWithValue("@UsuarioId", prestamo.UsuarioId);
+                        cmd.Parameters.AddWithValue("@FechaPrestamo", prestamo.FechaPrestamo);
+                        cmd.Parameters.AddWithValue("@CodigoBoleta", prestamo.CodigoBoleta);
+                        cmd.Parameters.AddWithValue("@EstadoPrestamo", prestamo.EstadoPrestamo);
 
-                        using (SqlCommand cmd = new SqlCommand(queryPrestamo, con, transaction))
+
+                        prestamoId = Convert.ToInt32(cmd.ExecuteScalar());
+
+                    }
+
+
+
+                    // 2. Insertar detalles y descontar stock
+
+                    foreach (var detalle in prestamo.Detalles)
+                    {
+
+
+                        string sqlDetalle = @"
+                        INSERT INTO PrestamoDetalle
+                        (
+                            PrestamoId,
+                            LibroId
+                        )
+                        VALUES
+                        (
+                            @PrestamoId,
+                            @LibroId
+                        )";
+
+
+                        using (SqlCommand cmd = new SqlCommand(sqlDetalle, con, trans))
                         {
-                            cmd.Parameters.AddWithValue("@UsuarioId", usuarioId);
-                            cmd.Parameters.AddWithValue("@FechaPrestamo", DateTime.Now);
-                            cmd.Parameters.AddWithValue("@CodigoBoleta", codigoBoleta);
+                            cmd.Parameters.AddWithValue("@PrestamoId", prestamoId);
+                            cmd.Parameters.AddWithValue("@LibroId", detalle.LibroId);
 
-                            prestamoId = (int)await cmd.ExecuteScalarAsync();
+                            cmd.ExecuteNonQuery();
                         }
 
-                        // 2. Insertar cada libro en el Detalle del Préstamo
-                        string queryDetalle = "INSERT INTO PrestamoDetalle (PrestamoId, LibroId) VALUES (@PrestamoId, @LibroId)";
 
-                        foreach (int libroId in libroIds)
+
+                        // Descontar stock
+
+                        string sqlStock = @"
+                        UPDATE Libro
+                        SET Stock = Stock - 1
+                        WHERE Id=@LibroId
+                        AND Stock > 0";
+
+
+                        using (SqlCommand cmd = new SqlCommand(sqlStock, con, trans))
                         {
-                            using (SqlCommand cmdDetalle = new SqlCommand(queryDetalle, con, transaction))
+
+                            cmd.Parameters.AddWithValue("@LibroId", detalle.LibroId);
+
+
+                            int filas = cmd.ExecuteNonQuery();
+
+
+                            if (filas == 0)
                             {
-                                cmdDetalle.Parameters.AddWithValue("@PrestamoId", prestamoId);
-                                cmdDetalle.Parameters.AddWithValue("@LibroId", libroId);
-                                await cmdDetalle.ExecuteNonQueryAsync();
+                                throw new Exception(
+                                "No hay stock disponible del libro");
                             }
+
                         }
 
-                        // CORRECCIÓN: Uso de Commit síncrono compatible con SqlTransaction
-                        transaction.Commit();
-                        return codigoBoleta;
+
                     }
-                    catch (Exception)
-                    {
-                        // CORRECCIÓN: Uso de Rollback síncrono si ocurre un fallo interno
-                        transaction.Rollback();
-                        throw;
-                    }
+
+
+                    trans.Commit();
+
+                    return true;
+
                 }
+                catch
+                {
+
+                    trans.Rollback();
+
+                    return false;
+
+                }
+
             }
         }
 
-        // 2. Implementación para obtener el préstamo por código de boleta
-        public async Task<Prestamo> ObtenerPorCodigoBoletaAsync(string codigoBoleta)
+
+
+        public DataTable Listar()
         {
-            Prestamo prestamo = null;
+
+            DataTable dt = new DataTable();
+
 
             using (SqlConnection con = conexion.ObtenerConexion())
             {
-                await con.OpenAsync();
-                string query = "SELECT Id, UsuarioId, FechaPrestamo, CodigoBoleta, EstadoPrestamo FROM Prestamo WHERE CodigoBoleta = @CodigoBoleta";
 
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    cmd.Parameters.AddWithValue("@CodigoBoleta", codigoBoleta);
+                con.Open();
 
-                    using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
-                    {
-                        if (await dr.ReadAsync())
-                        {
-                            prestamo = new Prestamo()
-                            {
-                                Id = (int)dr["Id"],
-                                UsuarioId = (int)dr["UsuarioId"],
-                                FechaPrestamo = (DateTime)dr["FechaPrestamo"],
-                                CodigoBoleta = dr["CodigoBoleta"].ToString(),
-                                EstadoPrestamo = dr["EstadoPrestamo"].ToString()
-                            };
-                        }
-                    }
-                }
+
+                string sql = @"
+                SELECT
+                    p.Id,
+                    p.CodigoBoleta,
+                    p.UsuarioId,
+                    p.FechaPrestamo,
+                    p.EstadoPrestamo
+                FROM Prestamo p";
+
+
+                SqlDataAdapter da =
+                new SqlDataAdapter(sql, con);
+
+
+                da.Fill(dt);
+
             }
-            return prestamo;
+
+
+            return dt;
+
         }
 
-        // 3. Implementación para actualizar el estado (Ej: de 'PendienteRecojo' a 'Entregado')
-        public async Task<bool> ActualizarEstadoPrestamoAsync(int prestamoId, string nuevoEstado)
+
+
+        public bool Editar(Prestamo prestamo)
         {
-            using (SqlConnection con = conexion.ObtenerConexion())
-            {
-                await con.OpenAsync();
-                string query = "UPDATE Prestamo SET EstadoPrestamo = @EstadoPrestamo WHERE Id = @Id";
-
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    cmd.Parameters.AddWithValue("@EstadoPrestamo", nuevoEstado);
-                    cmd.Parameters.AddWithValue("@Id", prestamoId);
-
-                    int filas = await cmd.ExecuteNonQueryAsync();
-                    return filas > 0;
-                }
-            }
-        }
-
-        // 4. Tu método de cancelación de reservas expiradas
-        public async Task<int> CancelarReservasExpiradasAsync()
-        {
-            using (SqlConnection con = conexion.ObtenerConexion())
-            {
-                await con.OpenAsync();
-                string query = @"UPDATE Prestamo 
-                                 SET EstadoPrestamo = 'Expirado' 
-                                 WHERE EstadoPrestamo = 'PendienteRecojo' 
-                                 AND DATEDIFF(day, FechaPrestamo, GETDATE()) >= 2";
-
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    return await cmd.ExecuteNonQueryAsync();
-                }
-            }
-        }
-
-        // 5. Tu método de historial del cliente
-        public async Task<List<Prestamo>> ObtenerHistorialClienteAsync(int usuarioId)
-        {
-            List<Prestamo> listaHistorial = new List<Prestamo>();
 
             using (SqlConnection con = conexion.ObtenerConexion())
             {
-                await con.OpenAsync();
-                string query = "SELECT Id, UsuarioId, FechaPrestamo, CodigoBoleta, EstadoPrestamo FROM Prestamo WHERE UsuarioId = @UsuarioId ORDER BY FechaPrestamo DESC";
 
-                using (SqlCommand cmd = new SqlCommand(query, con))
+                con.Open();
+
+
+                string sql = @"
+                UPDATE Prestamo
+                SET
+                    EstadoPrestamo=@EstadoPrestamo
+                WHERE Id=@Id";
+
+
+                using (SqlCommand cmd =
+                new SqlCommand(sql, con))
                 {
-                    cmd.Parameters.AddWithValue("@UsuarioId", usuarioId);
 
-                    using (SqlDataReader dr = await cmd.ExecuteReaderAsync())
-                    {
-                        while (await dr.ReadAsync())
-                        {
-                            Prestamo p = new Prestamo()
-                            {
-                                Id = (int)dr["Id"],
-                                UsuarioId = (int)dr["UsuarioId"],
-                                FechaPrestamo = (DateTime)dr["FechaPrestamo"],
-                                CodigoBoleta = dr["CodigoBoleta"].ToString(),
-                                EstadoPrestamo = dr["EstadoPrestamo"].ToString()
-                            };
-                            listaHistorial.Add(p);
-                        }
-                    }
+                    cmd.Parameters.AddWithValue("@Id", prestamo.Id);
+
+                    cmd.Parameters.AddWithValue(
+                    "@EstadoPrestamo",
+                    prestamo.EstadoPrestamo);
+
+
+                    return cmd.ExecuteNonQuery() > 0;
+
                 }
+
             }
-            return listaHistorial;
+
         }
+
+
+
+        public bool Eliminar(int id)
+        {
+
+            using (SqlConnection con = conexion.ObtenerConexion())
+            {
+
+                con.Open();
+
+
+                string sqlDetalle =
+                "DELETE FROM PrestamoDetalle WHERE PrestamoId=@Id";
+
+
+                using (SqlCommand cmd =
+                new SqlCommand(sqlDetalle, con))
+                {
+
+                    cmd.Parameters.AddWithValue("@Id", id);
+
+                    cmd.ExecuteNonQuery();
+
+                }
+
+
+
+                string sqlPrestamo =
+                "DELETE FROM Prestamo WHERE Id=@Id";
+
+
+
+                using (SqlCommand cmd =
+                new SqlCommand(sqlPrestamo, con))
+                {
+
+                    cmd.Parameters.AddWithValue("@Id", id);
+
+
+                    return cmd.ExecuteNonQuery() > 0;
+
+                }
+
+
+            }
+
+        }
+
     }
 }

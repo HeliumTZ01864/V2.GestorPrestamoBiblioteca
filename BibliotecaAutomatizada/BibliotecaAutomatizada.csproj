@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -92,6 +92,18 @@
     <Compile Include="Forms\Menus\MenuClienteForm.Designer.cs">
       <DependentUpon>MenuClienteForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Prestamo\PrestamoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Prestamo\PrestamoForm.Designer.cs">
+      <DependentUpon>PrestamoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Prestamo\SolPrestamoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Prestamo\SolPrestamoForm.Designer.cs">
+      <DependentUpon>SolPrestamoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Usuarios\UsuarioForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,7 +133,9 @@
     <Compile Include="Servicios\CategoriaService.cs" />
     <Compile Include="Servicios\LibroService.cs" />
     <Compile Include="Servicios\MultaService.cs" />
+    <Compile Include="Servicios\PrestamoService.cs" />
     <Compile Include="Servicios\UsuarioService.cs" />
+    <Compile Include="Sesion\UsuarioSesion.cs" />
     <EmbeddedResource Include="Forms\Access\RegistroForm.resx">
       <DependentUpon>RegistroForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -142,6 +156,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Menus\MenuClienteForm.resx">
       <DependentUpon>MenuClienteForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Prestamo\SolPrestamoForm.resx">
+      <DependentUpon>SolPrestamoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Usuarios\UsuarioForm.resx">
       <DependentUpon>UsuarioForm.cs</DependentUpon>
@@ -169,8 +186,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Forms\Prestamos\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

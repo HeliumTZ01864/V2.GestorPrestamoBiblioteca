@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using BibliotecaAutomatizada.Forms.Prestamo;
 
 namespace BibliotecaAutomatizada.Forms.Menus
 {
@@ -59,7 +59,7 @@ namespace BibliotecaAutomatizada.Forms.Menus
         private void btnNuevaReserva_Click(object sender, EventArgs e)
         {
             // Abrimos directamente el formulario de préstamos que creamos y reparamos
-            //AbrirFormInPanel(new PrestamosForm());
+            AbrirFormInPanel(new SolPrestamoForm());
         }
 
         private void btnVerLibros_Click(object sender, EventArgs e)
