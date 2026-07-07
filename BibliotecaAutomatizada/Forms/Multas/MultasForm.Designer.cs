@@ -80,6 +80,7 @@
             this.chkPagada.Size = new System.Drawing.Size(63, 17);
             this.chkPagada.TabIndex = 5;
             this.chkPagada.Text = "Pagada";
+            this.chkPagada.CheckedChanged += new System.EventHandler(this.chkPagada_CheckedChanged);
             // 
             // BtRegistrar
             // 
@@ -89,6 +90,7 @@
             this.BtRegistrar.TabIndex = 6;
             this.BtRegistrar.Text = "Registrar";
             this.BtRegistrar.UseVisualStyleBackColor = true;
+            this.BtRegistrar.Click += new System.EventHandler(this.BtRegistrar_Click);
             // 
             // BtPagar
             // 
@@ -98,6 +100,7 @@
             this.BtPagar.TabIndex = 7;
             this.BtPagar.Text = "Marcar Pagada";
             this.BtPagar.UseVisualStyleBackColor = true;
+            this.BtPagar.Click += new System.EventHandler(this.BtPagar_Click);
             // 
             // BtEliminar
             // 
@@ -107,6 +110,7 @@
             this.BtEliminar.TabIndex = 8;
             this.BtEliminar.Text = "Eliminar";
             this.BtEliminar.UseVisualStyleBackColor = true;
+            this.BtEliminar.Click += new System.EventHandler(this.BtEliminar_Click);
             // 
             // BtLimpiar
             // 
@@ -116,6 +120,7 @@
             this.BtLimpiar.TabIndex = 9;
             this.BtLimpiar.Text = "Limpiar";
             this.BtLimpiar.UseVisualStyleBackColor = true;
+            this.BtLimpiar.Click += new System.EventHandler(this.BtLimpiar_Click);
             // 
             // lblTitulo
             // 
