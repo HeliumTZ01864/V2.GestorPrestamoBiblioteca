@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using BibliotecaAutomatizada.Forms.Prestamos;
+
 
 namespace BibliotecaAutomatizada.Forms.Menus
 {
-    public partial class MenuEmpleadoForm : Form
+    public partial class MenuClienteForm : Form
     {
-        public MenuEmpleadoForm()
+        public MenuClienteForm()
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen; // Centra el menú al iniciar
@@ -59,7 +59,7 @@ namespace BibliotecaAutomatizada.Forms.Menus
         private void btnNuevaReserva_Click(object sender, EventArgs e)
         {
             // Abrimos directamente el formulario de préstamos que creamos y reparamos
-            AbrirFormInPanel(new PrestamosForm());
+            //AbrirFormInPanel(new PrestamosForm());
         }
 
         private void btnVerLibros_Click(object sender, EventArgs e)

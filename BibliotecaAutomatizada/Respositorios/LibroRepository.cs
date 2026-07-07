@@ -58,35 +58,27 @@ namespace BibliotecaAutomatizada.Respositorios
         public DataTable Listar()
         {
             DataTable dt = new DataTable();
-            // Definimos las columnas exactamente como las espera tu interfaz
-            dt.Columns.Add("Id", typeof(int));
-            dt.Columns.Add("Titulo", typeof(string));
-            dt.Columns.Add("Autor", typeof(string));
-            dt.Columns.Add("Stock", typeof(int));
-            dt.Columns.Add("CategoriaId", typeof(int));
 
             using (SqlConnection con = conexion.ObtenerConexion())
             {
                 con.Open();
-                string query = "SELECT Id, Titulo, Autor, Stock, CategoriaId FROM Libro";
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        while (dr.Read())
-                        {
-                            // Llenamos la fila del DataTable
-                            dt.Rows.Add(
-                                (int)dr["Id"],
-                                dr["Titulo"].ToString(),
-                                dr["Autor"].ToString(),
-                                (int)dr["Stock"],
-                                (int)dr["CategoriaId"]
-                            );
-                        }
-                    }
-                }
+
+                string query = @"
+            SELECT
+                l.Id,
+                l.Titulo,
+                l.Autor,
+                l.Stock,
+                l.CategoriaId,
+                c.Nombre AS Categoria
+            FROM Libro l
+            INNER JOIN Categoria c
+                ON l.CategoriaId = c.Id";
+
+                SqlDataAdapter da = new SqlDataAdapter(query, con);
+                da.Fill(dt);
             }
+
             return dt;
         }
 

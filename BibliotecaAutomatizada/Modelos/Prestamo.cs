@@ -15,5 +15,8 @@ namespace BibliotecaAutomatizada.Modelos
         // NUEVOS CAMPOS PARA LA AUTOMATIZACIÓN
         public string CodigoBoleta { get; set; } // Ejemplo: "BOL-2026-XXXX"
         public string EstadoPrestamo { get; set; } // "PendienteRecojo", "Activo", "Finalizado"
+
+        public List<PrestamoDetalle> Detalles { get; set; } = new List<PrestamoDetalle>();
+
     }
 }

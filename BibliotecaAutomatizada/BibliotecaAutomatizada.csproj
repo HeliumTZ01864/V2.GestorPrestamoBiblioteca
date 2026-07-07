@@ -50,11 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\ConexionDB.cs" />
-    <Compile Include="Forms\Access\MenuForm.cs">
+    <Compile Include="Forms\Access\RegistroForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Access\MenuForm.Designer.cs">
-      <DependentUpon>MenuForm.cs</DependentUpon>
+    <Compile Include="Forms\Access\RegistroForm.Designer.cs">
+      <DependentUpon>RegistroForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Categoria\CategoriaForm.cs">
       <SubType>Form</SubType>
@@ -79,23 +79,24 @@
     </Compile>
     <Compile Include="Forms\Multas\MultasForm.Designer.cs">
       <DependentUpon>MultasForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Menus\MenuAdminForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Menus\MenuAdminForm.Designer.cs">
       <DependentUpon>MenuAdminForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Menus\MenuEmpleadoForm.cs">
+    <Compile Include="Forms\Menus\MenuClienteForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Menus\MenuEmpleadoForm.Designer.cs">
-      <DependentUpon>MenuEmpleadoForm.cs</DependentUpon>
+    <Compile Include="Forms\Menus\MenuClienteForm.Designer.cs">
+      <DependentUpon>MenuClienteForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Prestamos\PrestamosForm.cs">
+    <Compile Include="Forms\Usuarios\UsuarioForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Prestamos\PrestamosForm.Designer.cs">
-      <DependentUpon>PrestamosForm.cs</DependentUpon>
+    <Compile Include="Forms\Usuarios\UsuarioForm.Designer.cs">
+      <DependentUpon>UsuarioForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ICalculadoraMulta.cs" />
     <Compile Include="Interfaces\ICategoriaRepository.cs" />
@@ -121,8 +122,8 @@
     <Compile Include="Servicios\LibroService.cs" />
     <Compile Include="Servicios\MultaService.cs" />
     <Compile Include="Servicios\UsuarioService.cs" />
-    <EmbeddedResource Include="Forms\Access\MenuForm.resx">
-      <DependentUpon>MenuForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Access\RegistroForm.resx">
+      <DependentUpon>RegistroForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Categoria\CategoriaForm.resx">
       <DependentUpon>CategoriaForm.cs</DependentUpon>
@@ -135,14 +136,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Multas\MultasForm.resx">
       <DependentUpon>MultasForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Menus\MenuAdminForm.resx">
       <DependentUpon>MenuAdminForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Menus\MenuEmpleadoForm.resx">
-      <DependentUpon>MenuEmpleadoForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Menus\MenuClienteForm.resx">
+      <DependentUpon>MenuClienteForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Prestamos\PrestamosForm.resx">
-      <DependentUpon>PrestamosForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Usuarios\UsuarioForm.resx">
+      <DependentUpon>UsuarioForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -167,6 +169,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Forms\Prestamos\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

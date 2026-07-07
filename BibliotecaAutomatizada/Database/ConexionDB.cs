@@ -10,7 +10,7 @@ namespace BibliotecaAutomatizada.Database
     public class ConexionDB
     {
         private string connectionString =
-            "Server=localhost;Database=BibliotecaDB;Trusted_Connection=True;";
+            "Server=localhost;Database=BibliotecaAutomatizada;Trusted_Connection=True;";
 
         public SqlConnection ObtenerConexion()
         {

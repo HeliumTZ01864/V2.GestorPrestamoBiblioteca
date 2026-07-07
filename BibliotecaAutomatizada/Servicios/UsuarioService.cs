@@ -18,9 +18,31 @@ namespace BibliotecaAutomatizada.Servicios
             this.repo = repo;
         }
 
-        public Usuario IniciarSesion(string correo, string password)
+        public async Task<Usuario> IniciarSesionAsync(string correo, string password)
         {
-            return repo.Login(correo, password);
+            return await repo.LoginAsync(correo, password);
         }
+
+        public void EditarUsuario(Usuario usuario)
+        {
+            repo.Editar(usuario);
+        }
+
+        public void EliminarUsuario(int id)
+        {
+            repo.Eliminar(id);
+        }
+
+        public async Task<List<Usuario>> ObtenerUsuariosAsync()
+        {
+            return await repo.ObtenerUsuariosAsync();
+        }
+
+        public async Task<bool> RegistrarUsuario(Usuario usuario)
+        {
+            return await repo.RegistrarAsync(usuario);
+        }
+
+
     }
 }

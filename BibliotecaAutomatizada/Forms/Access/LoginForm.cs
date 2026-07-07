@@ -5,12 +5,9 @@ using BibliotecaAutomatizada.Modelos;
 using BibliotecaAutomatizada.Respositorios;
 using BibliotecaAutomatizada.Servicios;
 using System;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BibliotecaAutomatizada.Formas
+namespace BibliotecaAutomatizada.Forms
 {
     public partial class LoginForm : Form
     {
@@ -22,60 +19,46 @@ namespace BibliotecaAutomatizada.Formas
 
         private async void BtIngresar_Click(object sender, EventArgs e)
         {
-            string correoIngresado = TBUsuario.Text.Trim().ToLower(); // Pasamos a minúsculas para comparar fácil
+            string correoIngresado = TBUsuario.Text.Trim().ToLower();
             string passwordIngresado = TBContra.Text;
 
-            if (string.IsNullOrEmpty(correoIngresado) || string.IsNullOrEmpty(passwordIngresado))
+            if (string.IsNullOrWhiteSpace(correoIngresado) ||
+                string.IsNullOrWhiteSpace(passwordIngresado))
             {
-                MessageBox.Show("Por favor, complete todos los campos.", "Campos Vacíos",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Por favor, complete todos los campos.",
+                    "Campos Vacíos",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 return;
             }
-
-            // ==========================================
-            // 🔥 MODO DE PRUEBA / BYPASS POR DEFAULT
-            // ==========================================
-            if (correoIngresado == "admin@biblioteca.com" && passwordIngresado == "123")
-            {
-                MessageBox.Show("¡Acceso de prueba concedido como: Administrador!", "Modo Desarrollo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                MenuAdminForm frmAdmin = new MenuAdminForm();
-                frmAdmin.Show();
-                this.Hide();
-                return; // Corta la ejecución aquí para no ir a la BD
-            }
-            else if (correoIngresado == "empleado@biblioteca.com" && passwordIngresado == "123")
-            {
-                MessageBox.Show("¡Acceso de prueba concedido como: Empleado!", "Modo Desarrollo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                MenuEmpleadoForm frmEmpleado = new MenuEmpleadoForm();
-                frmEmpleado.Show();
-                this.Hide();
-                return; // Corta la ejecución aquí para no ir a la BD
-            }
-            // ==========================================
-
-            // SI NO ES NINGUNO DE LOS USUARIOS DE PRUEBA, BUSCA NORMAL EN LA BASE DE DATOS:
-            string passwordCifrada = EncriptarSHA256(passwordIngresado);
 
             try
             {
                 IUsuarioRepository repo = new UsuarioRepository();
-                Usuario usuarioValido = await repo.LoginAsync(correoIngresado, passwordCifrada);
+                UsuarioService servicio = new UsuarioService(repo);
+
+                // Se envía la contraseña sin encriptar.
+                // El repositorio se encarga de encriptarla.
+                Usuario usuarioValido = await servicio.IniciarSesionAsync(
+                    correoIngresado,
+                    passwordIngresado);
 
                 if (usuarioValido != null)
                 {
-                    MessageBox.Show($"¡Bienvenido {usuarioValido.Nombre}!\nAcceso concedido como: {usuarioValido.Rol}",
-                                    "Inicio de Sesión Exitoso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(
+                        $"¡Bienvenido {usuarioValido.Nombre}!\nAcceso concedido como: {usuarioValido.Rol}",
+                        "Inicio de Sesión Exitoso",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
 
-                    // Evaluación del rol real (Enum de la Base de Datos convertido a String)
-                    if (usuarioValido.Rol.ToString().ToUpper() == "ADMIN" ||
-                        usuarioValido.Rol.ToString().ToUpper() == "ADMINISTRADOR")
+                    if (usuarioValido.Rol == TipoRol.Admin)
                     {
                         MenuAdminForm frmAdmin = new MenuAdminForm();
                         frmAdmin.Show();
                     }
                     else
                     {
-                        MenuEmpleadoForm frmEmpleado = new MenuEmpleadoForm();
+                        MenuClienteForm frmEmpleado = new MenuClienteForm();
                         frmEmpleado.Show();
                     }
 
@@ -83,33 +66,43 @@ namespace BibliotecaAutomatizada.Formas
                 }
                 else
                 {
-                    MessageBox.Show("Credenciales incorrectas. Verifique su correo y contraseña.", "Error de Acceso",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(
+                        "Correo o contraseña incorrectos.",
+                        "Error de Acceso",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error crítico al conectar con el servidor: " + ex.Message, "Error de Conexión",
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private string EncriptarSHA256(string texto)
-        {
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(texto));
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    sb.Append(bytes[i].ToString("x2"));
-                }
-                return sb.ToString();
+                MessageBox.Show(
+                    "Error al conectar con la base de datos.\n\n" + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
         private void LoginForm_Load(object sender, EventArgs e)
         {
+
+        }
+
+        private void TBUsuario_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TBContra_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnRegistro_Click(object sender, EventArgs e)
+        {
+            RegistroForm frm = new RegistroForm();
+
+            frm.ShowDialog();
         }
     }
 }

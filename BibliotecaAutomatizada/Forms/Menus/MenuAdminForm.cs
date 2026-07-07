@@ -1,4 +1,8 @@
-﻿using System;
+﻿using BibliotecaAutomatizada.Forms;
+using BibliotecaAutomatizada.Forms.Categoria;
+using BibliotecaAutomatizada.Forms.Multas;
+using BibliotecaAutomatizada.Forms.Usuarios;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -69,31 +73,27 @@ namespace BibliotecaAutomatizada.Forms.Menus
 
         private void btnUsuarios_Click(object sender, EventArgs e)
         {
-            // Cuando tengamos listo el CRUD de usuarios descomentas la línea de abajo:
-            // AbrirFormInPanel(new UsuariosForm());
+            AbrirFormInPanel(new UsuarioForm());
         }
 
         private void btnLibros_Click(object sender, EventArgs e)
         {
-            // Instancia tu formulario de libros existente (ajusta el nombre si varía)
-            // AbrirFormInPanel(new LibrosForm());
+            AbrirFormInPanel(new LibrosForm());
         }
 
         private void btnCategorias_Click(object sender, EventArgs e)
         {
-            // AbrirFormInPanel(new CategoriasForm());
+            AbrirFormInPanel(new CategoriaForm());
         }
 
         private void btnPrestamos_Click(object sender, EventArgs e)
         {
-            // Carga el visor general de auditoría de préstamos para el Admin
-            // AbrirFormInPanel(new HistorialPrestamosForm())
+            
         }
 
         private void btnMultas_Click(object sender, EventArgs e)
         {
-            // Carga la configuración global de costos por mora
-            // AbrirFormInPanel(new ConfigMultasForm());
+            AbrirFormInPanel(new MultasForm());
         }
 
         private void btnCerrarSesion_Click(object sender, EventArgs e)

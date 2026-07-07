@@ -17,7 +17,7 @@ namespace BibliotecaAutomatizada.Modelos
         public int Id { get; set; }
         public string Nombre { get; set; } = string.Empty;
         public string Correo { get; set; } = string.Empty;
-        public string Contraseña { get; set; } = string.Empty; // Recuerda encriptarla en producción
+        public string Contrasena { get; set; } = string.Empty; // Recuerda encriptarla en producción
         public TipoRol Rol { get; set; } = TipoRol.Cliente; // Por defecto es Cliente
     }
 }

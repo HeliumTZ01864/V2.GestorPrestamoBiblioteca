@@ -1,6 +1,6 @@
 ﻿namespace BibliotecaAutomatizada.Forms.Menus
 {
-    partial class MenuEmpleadoForm
+    partial class MenuClienteForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.pnlSidebarEmpleado = new System.Windows.Forms.Panel();
-            this.pnlContenedorEmpleado = new System.Windows.Forms.Panel();
-            this.btnNuevaReserva = new System.Windows.Forms.Button();
-            this.btnVerLibros = new System.Windows.Forms.Button();
-            this.btnCobrarMultas = new System.Windows.Forms.Button();
             this.btnCerrarSesion = new System.Windows.Forms.Button();
+            this.btnCobrarMultas = new System.Windows.Forms.Button();
+            this.btnVerLibros = new System.Windows.Forms.Button();
+            this.btnNuevaReserva = new System.Windows.Forms.Button();
+            this.pnlContenedorEmpleado = new System.Windows.Forms.Panel();
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlSidebarEmpleado.SuspendLayout();
@@ -52,32 +52,15 @@
             this.pnlSidebarEmpleado.TabIndex = 0;
             this.pnlSidebarEmpleado.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlSidebarEmpleado_Paint);
             // 
-            // pnlContenedorEmpleado
+            // btnCerrarSesion
             // 
-            this.pnlContenedorEmpleado.Location = new System.Drawing.Point(266, 108);
-            this.pnlContenedorEmpleado.Name = "pnlContenedorEmpleado";
-            this.pnlContenedorEmpleado.Size = new System.Drawing.Size(806, 548);
-            this.pnlContenedorEmpleado.TabIndex = 1;
-            // 
-            // btnNuevaReserva
-            // 
-            this.btnNuevaReserva.Location = new System.Drawing.Point(43, 197);
-            this.btnNuevaReserva.Name = "btnNuevaReserva";
-            this.btnNuevaReserva.Size = new System.Drawing.Size(108, 41);
-            this.btnNuevaReserva.TabIndex = 0;
-            this.btnNuevaReserva.Text = "Registrar Prestamo";
-            this.btnNuevaReserva.UseVisualStyleBackColor = true;
-            this.btnNuevaReserva.Click += new System.EventHandler(this.btnNuevaReserva_Click);
-            // 
-            // btnVerLibros
-            // 
-            this.btnVerLibros.Location = new System.Drawing.Point(43, 256);
-            this.btnVerLibros.Name = "btnVerLibros";
-            this.btnVerLibros.Size = new System.Drawing.Size(108, 43);
-            this.btnVerLibros.TabIndex = 1;
-            this.btnVerLibros.Text = "Consultar Catalogo";
-            this.btnVerLibros.UseVisualStyleBackColor = true;
-            this.btnVerLibros.Click += new System.EventHandler(this.btnVerLibros_Click);
+            this.btnCerrarSesion.Location = new System.Drawing.Point(43, 483);
+            this.btnCerrarSesion.Name = "btnCerrarSesion";
+            this.btnCerrarSesion.Size = new System.Drawing.Size(108, 23);
+            this.btnCerrarSesion.TabIndex = 3;
+            this.btnCerrarSesion.Text = "Cerrar Sesion";
+            this.btnCerrarSesion.UseVisualStyleBackColor = true;
+            this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
             // 
             // btnCobrarMultas
             // 
@@ -89,15 +72,32 @@
             this.btnCobrarMultas.UseVisualStyleBackColor = true;
             this.btnCobrarMultas.Click += new System.EventHandler(this.btnCobrarMultas_Click);
             // 
-            // btnCerrarSesion
+            // btnVerLibros
             // 
-            this.btnCerrarSesion.Location = new System.Drawing.Point(43, 483);
-            this.btnCerrarSesion.Name = "btnCerrarSesion";
-            this.btnCerrarSesion.Size = new System.Drawing.Size(108, 23);
-            this.btnCerrarSesion.TabIndex = 3;
-            this.btnCerrarSesion.Text = "Cerrar Sesion";
-            this.btnCerrarSesion.UseVisualStyleBackColor = true;
-            this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
+            this.btnVerLibros.Location = new System.Drawing.Point(43, 256);
+            this.btnVerLibros.Name = "btnVerLibros";
+            this.btnVerLibros.Size = new System.Drawing.Size(108, 43);
+            this.btnVerLibros.TabIndex = 1;
+            this.btnVerLibros.Text = "Consultar Catalogo";
+            this.btnVerLibros.UseVisualStyleBackColor = true;
+            this.btnVerLibros.Click += new System.EventHandler(this.btnVerLibros_Click);
+            // 
+            // btnNuevaReserva
+            // 
+            this.btnNuevaReserva.Location = new System.Drawing.Point(43, 197);
+            this.btnNuevaReserva.Name = "btnNuevaReserva";
+            this.btnNuevaReserva.Size = new System.Drawing.Size(108, 41);
+            this.btnNuevaReserva.TabIndex = 0;
+            this.btnNuevaReserva.Text = "Registrar Prestamo";
+            this.btnNuevaReserva.UseVisualStyleBackColor = true;
+            this.btnNuevaReserva.Click += new System.EventHandler(this.btnNuevaReserva_Click);
+            // 
+            // pnlContenedorEmpleado
+            // 
+            this.pnlContenedorEmpleado.Location = new System.Drawing.Point(266, 108);
+            this.pnlContenedorEmpleado.Name = "pnlContenedorEmpleado";
+            this.pnlContenedorEmpleado.Size = new System.Drawing.Size(806, 548);
+            this.pnlContenedorEmpleado.TabIndex = 1;
             // 
             // pnlHeader
             // 
@@ -114,9 +114,9 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(30, 19);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(430, 25);
+            this.label1.Size = new System.Drawing.Size(403, 25);
             this.label1.TabIndex = 0;
-            this.label1.Text = "SISTEMA DE BIBLIOTECA - ROL EMPLEADO";
+            this.label1.Text = "SISTEMA DE BIBLIOTECA - ROL CLIENTE";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // MenuEmpleadoForm
