@@ -96,6 +96,7 @@
     <Compile Include="Respositorios\CategoriaRepository.cs" />
     <Compile Include="Respositorios\LibroRepository.cs" />
     <Compile Include="Respositorios\UsuarioRepository.cs" />
+    <Compile Include="Servicios\CategoriaService.cs" />
     <Compile Include="Servicios\LibroService.cs" />
     <Compile Include="Servicios\UsuarioService.cs" />
     <EmbeddedResource Include="Forms\Access\MenuForm.resx">

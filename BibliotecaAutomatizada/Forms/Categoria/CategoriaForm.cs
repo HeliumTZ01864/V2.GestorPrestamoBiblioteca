@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BibliotecaAutomatizada.Modelos;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,130 +13,65 @@ namespace BibliotecaAutomatizada.Forms.Categoria
 {
     public partial class CategoriaForm : Form
     {
-        private Respositorios.CategoriaRepository repo = new Respositorios.CategoriaRepository();
-        private Respositorios.LibroRepository libroRepo = new Respositorios.LibroRepository();
-        private int selectedId = -1; // id del libro seleccionado cuando se muestran los libros
+        private Servicios.CategoriaService service = new Servicios.CategoriaService(new Respositorios.CategoriaRepository());
+        private int selectedId = -1; // id de la categoría seleccionada
 
         public CategoriaForm()
         {
             InitializeComponent();
-            CargarLibros();
+            CargarCategorias();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // Agregar libro usando txtnombre = Título y txtdescripcion = Nombre de la categoría
-            var titulo = txtnombre.Text.Trim();
-            var nombreCategoria = txtdescripcion.Text.Trim();
+            // Agregar categoría con descripción
+            var nombre = txtcategoria.Text.Trim();
+            var descripcion = txtdescripcion.Text.Trim();
 
-            if (string.IsNullOrEmpty(titulo) || string.IsNullOrEmpty(nombreCategoria))
+            if (string.IsNullOrEmpty(nombre))
             {
-                MessageBox.Show("Debe indicar título y categoría.");
+                MessageBox.Show("Indique la categoría.");
                 return;
             }
 
-            // Buscar categoría existente o crear nueva
-            var categorias = repo.Listar();
-            var categoria = categorias.FirstOrDefault(c => string.Equals(c.Nombre, nombreCategoria, StringComparison.OrdinalIgnoreCase));
-            if (categoria == null)
-            {
-                var nueva = new Modelos.Categoria { Nombre = nombreCategoria, Descricao = "" };
-                repo.Insertar(nueva);
-                categorias = repo.Listar();
-                categoria = categorias.FirstOrDefault(c => string.Equals(c.Nombre, nombreCategoria, StringComparison.OrdinalIgnoreCase));
-            }
-
-            if (categoria == null)
-            {
-                MessageBox.Show("No se pudo obtener o crear la categoría.");
-                return;
-            }
-
-            var libro = new Modelos.Libro
-            {
-                Titulo = titulo,
-                Autor = string.Empty,
-                Stock = 1,
-                CategoriaId = categoria.Id
-            };
-
-            libroRepo.Insertar(libro);
+            var cat = new Modelos.Categoria { Nombre = nombre, Descricao = descripcion };
+            service.RegistrarCategoria(cat);
             LimpiarCampos();
-            CargarLibros();
+            CargarCategorias();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            // Modificar libro seleccionado
-            if (selectedId <= 0)
-            {
-                MessageBox.Show("Seleccione un libro de la lista para modificar.");
-                return;
-            }
-
-            var titulo = txtnombre.Text.Trim();
-            var nombreCategoria = txtdescripcion.Text.Trim();
-
-            if (string.IsNullOrEmpty(titulo) || string.IsNullOrEmpty(nombreCategoria))
-            {
-                MessageBox.Show("Debe indicar título y categoría.");
-                return;
-            }
-
-            var categorias = repo.Listar();
-            var categoria = categorias.FirstOrDefault(c => string.Equals(c.Nombre, nombreCategoria, StringComparison.OrdinalIgnoreCase));
-            if (categoria == null)
-            {
-                var nueva = new Modelos.Categoria { Nombre = nombreCategoria, Descricao = "" };
-                repo.Insertar(nueva);
-                categorias = repo.Listar();
-                categoria = categorias.FirstOrDefault(c => string.Equals(c.Nombre, nombreCategoria, StringComparison.OrdinalIgnoreCase));
-            }
-
-            if (categoria == null)
-            {
-                MessageBox.Show("No se pudo obtener o crear la categoría.");
-                return;
-            }
-
-            var libro = new Modelos.Libro
-            {
-                Id = selectedId,
-                Titulo = titulo,
-                Autor = string.Empty,
-                Stock = 1,
-                CategoriaId = categoria.Id
-            };
-
-            libroRepo.Editar(libro);
-            LimpiarCampos();
-            CargarLibros();
+            
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            // Eliminar libro seleccionado
+            // Eliminar categoría seleccionada
             if (selectedId <= 0)
             {
-                MessageBox.Show("Seleccione un libro de la lista para eliminar.");
+                MessageBox.Show("Seleccione una categoría de la lista para eliminar.");
                 return;
             }
 
-            var confirm = MessageBox.Show("¿Eliminar libro seleccionado?", "Confirmar", MessageBoxButtons.YesNo);
+            var confirm = MessageBox.Show("¿Eliminar categoría seleccionada?", "Confirmar", MessageBoxButtons.YesNo);
             if (confirm == DialogResult.Yes)
             {
-                libroRepo.Eliminar(selectedId);
+                service.EliminarCategoria(selectedId);
                 LimpiarCampos();
-                CargarLibros();
+                CargarCategorias();
             }
         }
 
-        private void CargarLibros()
+        private void CargarCategorias()
         {
-            var dt = libroRepo.Listar();
+            var lista = service.ObtenerCategorias();
             dataGridView1.DataSource = null;
-            dataGridView1.DataSource = dt;
-            // Ajustes visuales: los nombres de columnas vienen desde la consulta en el repositorio
+            dataGridView1.DataSource = lista;
+            // Mostrar solo Nombre y Descricao
+            if (dataGridView1.Columns.Contains("Id")) dataGridView1.Columns["Id"].Visible = false;
+            if (dataGridView1.Columns.Contains("Nombre")) dataGridView1.Columns["Nombre"].HeaderText = "Categoría";
+            if (dataGridView1.Columns.Contains("Descricao")) dataGridView1.Columns["Descricao"].HeaderText = "Descripción";
             dataGridView1.AutoResizeColumns();
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.MultiSelect = false;
@@ -148,13 +84,11 @@ namespace BibliotecaAutomatizada.Forms.Categoria
             if (e.RowIndex >= 0)
             {
                 var row = dataGridView1.Rows[e.RowIndex];
-                // Cuando la fuente es un DataTable, DataBoundItem es DataRowView
-                if (row.DataBoundItem is DataRowView drv)
+                if (row.DataBoundItem is Modelos.Categoria cat)
                 {
-                    var r = drv.Row;
-                    selectedId = Convert.ToInt32(r["Id"]);
-                    txtnombre.Text = r["Titulo"].ToString();
-                    txtdescripcion.Text = r["Categoria"].ToString();
+                    selectedId = cat.Id;
+                    txtcategoria.Text = cat.Nombre;
+                    txtdescripcion.Text = cat.Descricao;
                 }
             }
         }
@@ -162,7 +96,7 @@ namespace BibliotecaAutomatizada.Forms.Categoria
         private void LimpiarCampos()
         {
             selectedId = -1;
-            txtnombre.Text = string.Empty;
+            txtcategoria.Text = string.Empty;
             txtdescripcion.Text = string.Empty;
         }
 
@@ -181,6 +115,30 @@ namespace BibliotecaAutomatizada.Forms.Categoria
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void btnbodificar_Click(object sender, EventArgs e)
+        {
+            
+            if (selectedId <= 0)
+            {
+                MessageBox.Show("Seleccione una categoría para modificar.");
+                return;
+            }
+
+            var nombre = txtcategoria.Text.Trim();
+            var descripcion = txtdescripcion.Text.Trim();
+
+            if (string.IsNullOrEmpty(nombre))
+            {
+                MessageBox.Show("Indique la categoría.");
+                return;
+            }
+
+            var cat = new Modelos.Categoria { Id = selectedId, Nombre = nombre, Descricao = descripcion };
+            service.EditarCategoria(cat);
+            LimpiarCampos();
+            CargarCategorias();
         }
     }
 }

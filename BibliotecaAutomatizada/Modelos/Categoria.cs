@@ -13,7 +13,6 @@ namespace BibliotecaAutomatizada.Modelos
         public string Nombre { get; set; }
 
         public string Descricao { get; set; }
-        
     }
 
     
