@@ -1,4 +1,4 @@
-﻿namespace BibliotecaAutomatizada.Formas
+﻿namespace BibliotecaAutomatizada.Forms
 {
     partial class LoginForm
     {
@@ -33,6 +33,7 @@
             this.TBUsuario = new System.Windows.Forms.TextBox();
             this.TBContra = new System.Windows.Forms.TextBox();
             this.BtIngresar = new System.Windows.Forms.Button();
+            this.btnRegistro = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -59,6 +60,7 @@
             this.TBUsuario.Name = "TBUsuario";
             this.TBUsuario.Size = new System.Drawing.Size(100, 20);
             this.TBUsuario.TabIndex = 2;
+            this.TBUsuario.TextChanged += new System.EventHandler(this.TBUsuario_TextChanged);
             // 
             // TBContra
             // 
@@ -67,6 +69,7 @@
             this.TBContra.Size = new System.Drawing.Size(100, 20);
             this.TBContra.TabIndex = 3;
             this.TBContra.UseSystemPasswordChar = true;
+            this.TBContra.TextChanged += new System.EventHandler(this.TBContra_TextChanged);
             // 
             // BtIngresar
             // 
@@ -78,11 +81,22 @@
             this.BtIngresar.UseVisualStyleBackColor = true;
             this.BtIngresar.Click += new System.EventHandler(this.BtIngresar_Click);
             // 
+            // btnRegistro
+            // 
+            this.btnRegistro.Location = new System.Drawing.Point(181, 212);
+            this.btnRegistro.Name = "btnRegistro";
+            this.btnRegistro.Size = new System.Drawing.Size(75, 23);
+            this.btnRegistro.TabIndex = 5;
+            this.btnRegistro.Text = "Registro";
+            this.btnRegistro.UseVisualStyleBackColor = true;
+            this.btnRegistro.Click += new System.EventHandler(this.btnRegistro_Click);
+            // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(449, 294);
+            this.Controls.Add(this.btnRegistro);
             this.Controls.Add(this.BtIngresar);
             this.Controls.Add(this.TBContra);
             this.Controls.Add(this.TBUsuario);
@@ -90,6 +104,7 @@
             this.Controls.Add(this.label1);
             this.Name = "LoginForm";
             this.Text = "LoginForm";
+            this.Load += new System.EventHandler(this.LoginForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -102,5 +117,6 @@
         private System.Windows.Forms.TextBox TBUsuario;
         private System.Windows.Forms.TextBox TBContra;
         private System.Windows.Forms.Button BtIngresar;
+        private System.Windows.Forms.Button btnRegistro;
     }
 }

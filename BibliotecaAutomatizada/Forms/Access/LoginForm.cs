@@ -1,46 +1,108 @@
 ﻿using BibliotecaAutomatizada.Forms.Access;
+using BibliotecaAutomatizada.Forms.Menus;
 using BibliotecaAutomatizada.Interfaces;
 using BibliotecaAutomatizada.Modelos;
 using BibliotecaAutomatizada.Respositorios;
 using BibliotecaAutomatizada.Servicios;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BibliotecaAutomatizada.Formas
+namespace BibliotecaAutomatizada.Forms
 {
     public partial class LoginForm : Form
     {
         public LoginForm()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
         }
 
-        private void BtIngresar_Click(object sender, EventArgs e)
+        private async void BtIngresar_Click(object sender, EventArgs e)
         {
-            IUsuarioRepository repo = new UsuarioRepository();
-            UsuarioService service = new UsuarioService(repo);
+            string correoIngresado = TBUsuario.Text.Trim().ToLower();
+            string passwordIngresado = TBContra.Text;
 
-            Usuario usuario = service.IniciarSesion(TBUsuario.Text, TBContra.Text);
-
-            if (usuario != null)
+            if (string.IsNullOrWhiteSpace(correoIngresado) ||
+                string.IsNullOrWhiteSpace(passwordIngresado))
             {
-                MessageBox.Show("Bienvenido " + usuario.Nombre);
+                MessageBox.Show("Por favor, complete todos los campos.",
+                    "Campos Vacíos",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
 
-                MenuForm menu = new MenuForm();
-                menu.Show();
-                this.Hide();
-            }
-            else
+            try
             {
-                MessageBox.Show("Credenciales incorrectas");
+                IUsuarioRepository repo = new UsuarioRepository();
+                UsuarioService servicio = new UsuarioService(repo);
+
+                // Se envía la contraseña sin encriptar.
+                // El repositorio se encarga de encriptarla.
+                Usuario usuarioValido = await servicio.IniciarSesionAsync(
+                    correoIngresado,
+                    passwordIngresado);
+
+                if (usuarioValido != null)
+                {
+                    MessageBox.Show(
+                        $"¡Bienvenido {usuarioValido.Nombre}!\nAcceso concedido como: {usuarioValido.Rol}",
+                        "Inicio de Sesión Exitoso",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+                    if (usuarioValido.Rol == TipoRol.Admin)
+                    {
+                        MenuAdminForm frmAdmin = new MenuAdminForm();
+                        frmAdmin.Show();
+                    }
+                    else
+                    {
+                        MenuClienteForm frmEmpleado = new MenuClienteForm();
+                        frmEmpleado.Show();
+                    }
+
+                    this.Hide();
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "Correo o contraseña incorrectos.",
+                        "Error de Acceso",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error al conectar con la base de datos.\n\n" + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private void LoginForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TBUsuario_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TBContra_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnRegistro_Click(object sender, EventArgs e)
+        {
+            RegistroForm frm = new RegistroForm();
+
+            frm.ShowDialog();
         }
     }
 }

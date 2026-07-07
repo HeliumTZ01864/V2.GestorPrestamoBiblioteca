@@ -1,4 +1,4 @@
-﻿namespace BibliotecaAutomatizada.Formas
+﻿namespace BibliotecaAutomatizada.Forms
 {
     partial class LibrosForm
     {
@@ -32,7 +32,6 @@
             this.BtAgregar = new System.Windows.Forms.Button();
             this.BtModificar = new System.Windows.Forms.Button();
             this.BtEliminar = new System.Windows.Forms.Button();
-            this.BtSalir = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -83,16 +82,6 @@
             this.BtEliminar.Text = "Eliminar";
             this.BtEliminar.UseVisualStyleBackColor = true;
             this.BtEliminar.Click += new System.EventHandler(this.BtEliminar_Click);
-            // 
-            // BtSalir
-            // 
-            this.BtSalir.Location = new System.Drawing.Point(385, 350);
-            this.BtSalir.Name = "BtSalir";
-            this.BtSalir.Size = new System.Drawing.Size(84, 30);
-            this.BtSalir.TabIndex = 4;
-            this.BtSalir.Text = "Salir";
-            this.BtSalir.UseVisualStyleBackColor = true;
-            this.BtSalir.Click += new System.EventHandler(this.BtSalir_Click);
             // 
             // label1
             // 
@@ -172,7 +161,6 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.BtSalir);
             this.Controls.Add(this.BtEliminar);
             this.Controls.Add(this.BtModificar);
             this.Controls.Add(this.BtAgregar);
@@ -193,7 +181,6 @@
         private System.Windows.Forms.Button BtAgregar;
         private System.Windows.Forms.Button BtModificar;
         private System.Windows.Forms.Button BtEliminar;
-        private System.Windows.Forms.Button BtSalir;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;

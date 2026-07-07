@@ -1,17 +1,19 @@
 ﻿using BibliotecaAutomatizada.Modelos;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BibliotecaAutomatizada.Interfaces
 {
-    public interface ICategoriaRepository
+    public interface IMultaRepository
     {
-        List<Categoria> Listar();
-        void Insertar(Categoria categoria);
-        void Modificar(Categoria categoria);
+        void Insertar(Multa multa);
+        void MarcarComoPagada(int id);
         void Eliminar(int id);
+        DataTable Listar();
+        DataTable ListarPorPrestamoDetalle(int prestamoDetalleId);
     }
 }

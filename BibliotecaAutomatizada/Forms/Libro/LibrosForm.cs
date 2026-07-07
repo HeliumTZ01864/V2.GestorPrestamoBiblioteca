@@ -1,4 +1,4 @@
-﻿using BibliotecaAutomatizada.Forms.Access;
+﻿
 using BibliotecaAutomatizada.Modelos;
 using BibliotecaAutomatizada.Respositorios;
 using BibliotecaAutomatizada.Servicios;
@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BibliotecaAutomatizada.Formas
+namespace BibliotecaAutomatizada.Forms
 {
     public partial class LibrosForm : Form
     {
@@ -94,13 +94,7 @@ namespace BibliotecaAutomatizada.Formas
             CargarLibros();
         }
 
-        private void BtSalir_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-
-            MenuForm menu = new MenuForm();
-            menu.Show();
-        }
+        
         private void dgvLibros_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             idSeleccionado = Convert.ToInt32(dgvLibros.CurrentRow.Cells["Id"].Value);
@@ -108,9 +102,9 @@ namespace BibliotecaAutomatizada.Formas
             txtTitulo.Text = dgvLibros.CurrentRow.Cells["Titulo"].Value.ToString();
             txtAutor.Text = dgvLibros.CurrentRow.Cells["Autor"].Value.ToString();
             numStock.Value = Convert.ToInt32(dgvLibros.CurrentRow.Cells["Stock"].Value);
-            cmbCategoria.SelectedValue = dgvLibros.CurrentRow.Cells["Categoria"].Value;
+            cmbCategoria.SelectedValue = dgvLibros.CurrentRow.Cells["CategoriaId"].Value;
 
-
+            dgvLibros.Columns["CategoriaId"].Visible = false;
         }
     }
 }
